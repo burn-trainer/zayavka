@@ -198,6 +198,7 @@ input[type=date]:focus{border-color:var(--accent)}
   <div class="step-tag">Шаг 1 — Контакт</div>
   <div class="step-title">Кто вы?</div>
   <div class="step-sub">Данные для обратной связи</div>
+  <div class="field-hint" style="margin-bottom:20px;font-size:13px;line-height:1.6">Для того, чтобы мы запланировали тренинг с вашей компанией, пожалуйста, ответьте на следующие вопросы:</div>
 
   <div class="field" id="f-name">
     <label class="field-label">Имя и фамилия<span class="req">*</span></label>
@@ -218,7 +219,7 @@ input[type=date]:focus{border-color:var(--accent)}
   </div>
 
   <div class="field" id="f-contact">
-    <label class="field-label">Телефон / WhatsApp / Telegram<span class="req">*</span></label>
+    <label class="field-label">Телефон, Telegram или другой мессенджер — укажите<span class="req">*</span></label>
     <div class="input-wrap"><span class="ico" style="width:18px;height:18px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><input type="tel" id="inp-contact" placeholder="+7 900 000 00 00 или @username" autocomplete="tel"></div>
     <div class="err-msg">Укажите контакт</div>
   </div>
@@ -266,9 +267,12 @@ input[type=date]:focus{border-color:var(--accent)}
   <div class="check-body"><span class="check-indicator"><span class="check-tick"><svg viewBox="0 0 10 7" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="check-text">Управляющий / Руководитель</span></div>
 </label>
       <label class="check-card">
-  <input type="checkbox" name="roles" value="Другие">
+  <input type="checkbox" name="roles" value="Другие" onchange="toggleRolesOther(this)">
   <div class="check-body"><span class="check-indicator"><span class="check-tick"><svg viewBox="0 0 10 7" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="check-text">Другие</span></div>
 </label>
+    </div>
+    <div class="cond-block" id="roles-other-block">
+      <textarea id="inp-roles-other" placeholder="Укажите имена и должности сотрудников, которые будут присутствовать на тренинге" rows="2"></textarea>
     </div>
     <div class="loose-err" id="err-roles">Выберите хотя бы одну должность</div>
   </div>
@@ -358,7 +362,7 @@ input[type=date]:focus{border-color:var(--accent)}
 </label>
       <label class="card-option">
   <input type="radio" name="format" value="Онлайн">
-  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span><span class="card-text">Онлайн — Zoom, Teams или другая платформа</span></div>
+  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span><span class="card-text">Онлайн — Zoom, Онлайн-школа BURN или другая платформа</span></div>
 </label>
       <label class="card-option">
   <input type="radio" name="format" value="Неважно">
@@ -382,20 +386,24 @@ input[type=date]:focus{border-color:var(--accent)}
     <label class="field-label">Когда нужно провести?<span class="req">*</span></label>
     <div class="cards-grid col1" id="f-when">
       <label class="card-option">
-  <input type="radio" name="when" value="В этом месяце" onchange="showDate(false)">
+  <input type="radio" name="when" value="В этом месяце" onchange="showDate(false);showWhenOther(false)">
   <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span><span class="card-text">В этом месяце</span></div>
 </label>
       <label class="card-option">
-  <input type="radio" name="when" value="В следующем месяце" onchange="showDate(false)">
+  <input type="radio" name="when" value="В следующем месяце" onchange="showDate(false);showWhenOther(false)">
   <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg></span><span class="card-text">В следующем месяце</span></div>
 </label>
       <label class="card-option">
-  <input type="radio" name="when" value="Позже — пока планируем" onchange="showDate(false)">
+  <input type="radio" name="when" value="Позже — пока планируем" onchange="showDate(false);showWhenOther(false)">
   <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span class="card-text">Позже — пока планируем</span></div>
 </label>
       <label class="card-option">
-  <input type="radio" name="when" value="Есть конкретная дата" onchange="showDate(true)">
+  <input type="radio" name="when" value="Есть конкретная дата" onchange="showDate(true);showWhenOther(false)">
   <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg></span><span class="card-text">Есть конкретная дата</span></div>
+</label>
+      <label class="card-option" style="grid-column:1/-1">
+  <input type="radio" name="when" value="Другое" onchange="showDate(false);showWhenOther(true)">
+  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></span><span class="card-text">Другое — напишу в поле</span></div>
 </label>
     </div>
     <div class="loose-err" id="err-when">Укажите сроки</div>
@@ -404,6 +412,9 @@ input[type=date]:focus{border-color:var(--accent)}
         <span class="date-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
         <input type="date" id="inp-date">
       </div>
+    </div>
+    <div class="cond-block" id="when-other-block">
+      <textarea id="inp-when-other" placeholder="Например: только в выходные, после 15 сентября, нужно согласовать с директором..." rows="2"></textarea>
     </div>
   </div>
 </div>
@@ -418,6 +429,24 @@ input[type=date]:focus{border-color:var(--accent)}
     <label class="field-label">Какие тренинги от BURN уже проходили участники?</label>
     <textarea id="inp-prev" placeholder="Например: «Кальянная карта» в марте, онлайн-обучение по BLACKBURN в прошлом году" rows="3"></textarea>
     <div class="field-hint">Чтобы не повторять пройденное и выстроить логику</div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Проходили ли участники другие тренинги?</label>
+    <div class="field-hint" style="margin-bottom:10px">Любые — по продажам, сервису, управлению — не от BURN</div>
+    <div class="cards-grid col2" id="f-other-trainings">
+      <label class="card-option">
+  <input type="radio" name="otherTrainings" value="Нет" onchange="showOtherTrainings(false)">
+  <div class="card-body"><span class="card-text">Нет</span></div>
+</label>
+      <label class="card-option">
+  <input type="radio" name="otherTrainings" value="Да" onchange="showOtherTrainings(true)">
+  <div class="card-body"><span class="card-text">Да</span></div>
+</label>
+    </div>
+    <div class="cond-block" id="other-trainings-block">
+      <textarea id="inp-other-trainings" placeholder="Напишите название тренингов, которые проходили участники" rows="3"></textarea>
+    </div>
   </div>
 
   <div class="field">
@@ -455,6 +484,9 @@ function onDur(v){
 }
 
 function showDate(show){document.getElementById('date-block').classList.toggle('visible',show)}
+function showWhenOther(show){document.getElementById('when-other-block').classList.toggle('visible',show)}
+function toggleRolesOther(cb){document.getElementById('roles-other-block').classList.toggle('visible',cb.checked)}
+function showOtherTrainings(show){document.getElementById('other-trainings-block').classList.toggle('visible',show)}
 
 function updateProgress(){
   const pct=Math.round((cur-1)/TOTAL*100);
@@ -515,6 +547,7 @@ function collect(){
     city:    document.getElementById('inp-city').value.trim(),
     contact: document.getElementById('inp-contact').value.trim(),
     roles:   [...document.querySelectorAll('input[name=roles]:checked')].map(c=>c.value).join(', '),
+    rolesOther: document.getElementById('inp-roles-other').value.trim(),
     size:    document.querySelector('input[name=size]:checked')?.value||'',
     topic:   document.querySelector('input[name=topic]:checked')?.value||'',
     theme:   document.getElementById('inp-theme').value.trim(),
@@ -523,7 +556,10 @@ function collect(){
     duration:document.getElementById('durNum').textContent+' '+document.getElementById('durUnit').textContent,
     when:    document.querySelector('input[name=when]:checked')?.value||'',
     date:    document.getElementById('inp-date').value||'',
+    whenOther: document.getElementById('inp-when-other').value.trim(),
     prev:    document.getElementById('inp-prev').value.trim(),
+    otherTrainings: document.querySelector('input[name=otherTrainings]:checked')?.value||'',
+    otherTrainingsDetail: document.getElementById('inp-other-trainings').value.trim(),
     extra:   document.getElementById('inp-extra').value.trim(),
   };
 }
