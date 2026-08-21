@@ -69,7 +69,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;
 .req{color:var(--accent);margin-left:2px}
 .field-hint{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.5}
 
-.input-wrap{display:flex;align-items:center;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.10);border-radius:var(--r-sm);overflow:hidden;transition:border-color .22s,box-shadow .22s,background .22s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.input-wrap{display:flex;align-items:center;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.10);border-radius:var(--r-sm);transition:border-color .22s,box-shadow .22s,background .22s}
 .input-wrap .ico{padding:0 10px 0 14px;flex-shrink:0;opacity:.45;display:flex;align-items:center}
 .input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow),0 0 20px rgba(255,72,1,.08);background:rgba(255,72,1,.04)}
 input[type=text],input[type=tel]{
@@ -185,9 +185,6 @@ input[type=date]:focus{border-color:var(--accent)}
 .success-title{font-family:'GETVOIP',sans-serif;font-size:40px;line-height:1.05;text-transform:uppercase;margin-bottom:14px;position:relative;z-index:1}
 .success-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:280px;margin-bottom:28px;position:relative;z-index:1}
 .success-line{width:40px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);border-radius:1px;margin:0 auto;position:relative;z-index:1}
-/* ── ИСКРЫ ── */
-.spark{position:absolute;border-radius:50%;pointer-events:none;animation:sparkFly var(--dur,2s) var(--delay,0s) ease-out forwards}
-@keyframes sparkFly{0%{transform:translate(0,0) scale(1);opacity:1}70%{opacity:.6}100%{transform:translate(var(--tx,0px),var(--ty,-350px)) scale(.1);opacity:0}}
 
 /* ── ICO ── */
 .ico svg{width:100%;height:100%;display:block}
@@ -460,6 +457,7 @@ input[type=date]:focus{border-color:var(--accent)}
 
 <!-- SUCCESS -->
 <div class="success" id="successScreen">
+  <canvas id="fireCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
   <div class="success-fire"></div>
   <div class="success-ring">
     <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -564,7 +562,7 @@ async function submit(){
     document.getElementById('navButtons').style.display='none';
     document.getElementById('progressWrap').style.display='none';
     document.getElementById('successScreen').classList.add('active');
-  launchSparks();const si=setInterval(launchSparks,1800);setTimeout(()=>clearInterval(si),8000);
+  setTimeout(initFireCanvas, 60);
   }catch{
     btn.textContent='Отправить ✓';btn.disabled=false;
     alert('Ошибка отправки. Попробуйте ещё раз.');
@@ -576,23 +574,76 @@ function goBack(){if(cur>1)showStep(cur-1,-1)}
 
 updateProgress();
 
-function launchSparks(){
-  const s=document.getElementById('successScreen');
-  const colors=['#FF4801','#FF6B2B','#FFB347','#FF8C00','#FF3300'];
-  for(let i=0;i<38;i++){
-    const sp=document.createElement('div');
-    sp.className='spark';
-    const x=5+Math.random()*90;
-    const tx=(Math.random()-.5)*180;
-    const ty=-(160+Math.random()*300);
-    const dur=1.3+Math.random()*2.2;
-    const delay=Math.random()*1.4;
-    const size=2+Math.random()*5;
-    const color=colors[Math.floor(Math.random()*colors.length)];
-    sp.style.cssText='left:'+x+'%;bottom:'+(3+Math.random()*20)+'%;--tx:'+tx+'px;--ty:'+ty+'px;--dur:'+dur+'s;--delay:'+delay+'s;width:'+size+'px;height:'+size+'px;background:'+color+';box-shadow:0 0 '+(size*2)+'px '+color;
-    s.appendChild(sp);
-    setTimeout(()=>{if(sp.parentNode)sp.parentNode.removeChild(sp)},(dur+delay)*1000+200);
+function initFireCanvas(){
+  const cvs=document.getElementById('fireCanvas');
+  const ss=document.getElementById('successScreen');
+  cvs.width=ss.offsetWidth*window.devicePixelRatio||ss.offsetWidth;
+  cvs.height=ss.offsetHeight*window.devicePixelRatio||ss.offsetHeight;
+  cvs.style.width=ss.offsetWidth+'px';cvs.style.height=ss.offsetHeight+'px';
+  const ctx=cvs.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  ctx.scale(dpr,dpr);
+  const W=ss.offsetWidth,H=ss.offsetHeight;
+
+  class Smoke{
+    constructor(){this.init(true)}
+    init(r){
+      this.x=(Math.random()-.1)*W*1.2;this.y=H+(r?Math.random()*H*.35:0);
+      this.radius=40+Math.random()*110;this.vx=(Math.random()-.5)*.22;this.vy=-(0.14+Math.random()*.38);
+      this.life=0;this.maxL=260+Math.random()*320;this.maxA=.022+Math.random()*.038;
+      this.rot=Math.random()*Math.PI*2;this.rs=(Math.random()-.5)*.004;
+    }
+    tick(){
+      this.life++;const t=this.life/this.maxL;
+      this.a=t<.25?(t/.25)*this.maxA:t>.7?((1-t)/.3)*this.maxA:this.maxA;
+      this.x+=this.vx;this.y+=this.vy;this.radius+=.22;this.rot+=this.rs;
+      if(this.life>=this.maxL||this.y<-220)this.init(false);
+    }
+    draw(){
+      ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rot);
+      const g=ctx.createRadialGradient(0,0,0,0,0,this.radius);
+      g.addColorStop(0,`rgba(90,40,15,${this.a})`);
+      g.addColorStop(.5,`rgba(50,20,5,${this.a*.5})`);
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g;ctx.fillRect(-this.radius,-this.radius,this.radius*2,this.radius*2);ctx.restore();
+    }
   }
+
+  class Spark{
+    constructor(){this.init(true)}
+    init(r){
+      this.x=W*(.1+Math.random()*.8);this.y=H*(.55+Math.random()*.45);
+      this.radius=1+Math.random()*2.8;this.vx=(Math.random()-.5)*2.2;this.vy=-(1.5+Math.random()*4);
+      this.life=0;this.maxL=45+Math.random()*95;
+      if(r)this.life=Math.random()*this.maxL;
+    }
+    tick(){
+      this.life++;const t=this.life/this.maxL;
+      this.a=(1-t)*(.85+Math.random()*.15);
+      this.x+=this.vx*(1-t*.3);this.y+=this.vy*(1-t*.45);this.vy+=.055;
+      if(this.life>=this.maxL)this.init(false);
+    }
+    draw(){
+      ctx.save();ctx.globalAlpha=this.a;
+      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.radius*3.5);
+      g.addColorStop(0,'rgba(255,200,80,.95)');g.addColorStop(.4,'rgba(255,72,1,.65)');g.addColorStop(1,'rgba(255,72,1,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(this.x,this.y,this.radius*3.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(255,235,150,.95)';ctx.beginPath();ctx.arc(this.x,this.y,this.radius*.55,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  const smokes=Array.from({length:28},()=>new Smoke());
+  const sparks=Array.from({length:18},()=>new Spark());
+  let raf=null;
+  function fireFrame(){
+    ctx.clearRect(0,0,W,H);
+    smokes.forEach(p=>{p.tick();p.draw();});
+    sparks.forEach(p=>{p.tick();p.draw();});
+    raf=requestAnimationFrame(fireFrame);
+  }
+  fireFrame();
+}
 }
 
 </script>
