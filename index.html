@@ -97,6 +97,7 @@ input::placeholder,textarea::placeholder{color:#555}
 .card-body .ico svg{color:var(--muted);transition:color .18s}
 .card-option input:checked + .card-body .ico svg{color:var(--accent)}
 .card-text{font-size:14px;font-weight:600;color:var(--text);line-height:1.3}
+.card-sub{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:2px;line-height:1.3}
 @media(hover:hover){.card-option:not(:has(input:checked)):hover .card-body{border-color:rgba(255,72,1,.4);background:rgba(255,72,1,.04)}}
 
 /* ── CHECK CARDS ── */
@@ -122,14 +123,6 @@ input::placeholder,textarea::placeholder{color:#555}
 .check-card input:checked + .check-body .check-tick{display:block}
 .check-text{font-size:14px;color:var(--text);line-height:1.4}
 
-/* ── DURATION ── */
-.dur-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:22px 18px}
-.dur-display{text-align:center;margin-bottom:18px}
-.dur-num{font-family:'GETVOIP',sans-serif;font-size:44px;color:var(--accent);line-height:1}
-.dur-unit{font-size:14px;color:var(--muted);font-family:'Montserrat',sans-serif;font-weight:400;margin-left:6px}
-input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:var(--border);border-radius:2px;outline:none;margin-bottom:10px;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;background:var(--accent);border-radius:50%;cursor:pointer;box-shadow:0 0 0 5px var(--accent-glow)}
-.dur-marks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600}
 
 /* ── NAV ── */
 .nav-buttons{display:flex;align-items:center;gap:12px;margin-top:32px}
@@ -272,7 +265,7 @@ input[type=date]:focus{border-color:var(--accent)}
 </label>
     </div>
     <div class="cond-block" id="roles-other-block">
-      <textarea id="inp-roles-other" placeholder="Укажите имена и должности сотрудников, которые будут присутствовать на тренинге" rows="2"></textarea>
+      <textarea id="inp-roles-other" placeholder="Например: бариста, сомелье, хостес" rows="2"></textarea>
     </div>
     <div class="loose-err" id="err-roles">Выберите хотя бы одну должность</div>
   </div>
@@ -312,19 +305,19 @@ input[type=date]:focus{border-color:var(--accent)}
     <div class="cards-grid col2" id="f-topic">
       <label class="card-option">
   <input type="radio" name="topic" value="Продажи">
-  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="card-text">Продажи</span></div>
+  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="card-text">Продажи<span class="card-sub">чек, допродажи, работа с возражениями</span></span></div>
 </label>
       <label class="card-option">
   <input type="radio" name="topic" value="Сервис">
-  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span><span class="card-text">Сервис</span></div>
+  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span><span class="card-text">Сервис<span class="card-sub">гостеприимство, стандарты, лояльность гостей</span></span></div>
 </label>
       <label class="card-option">
   <input type="radio" name="topic" value="Переговоры">
-  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="card-text">Переговоры</span></div>
+  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="card-text">Переговоры<span class="card-sub">сложные гости, конфликты, убеждение</span></span></div>
 </label>
       <label class="card-option">
   <input type="radio" name="topic" value="Управление">
-  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="card-text">Управление</span></div>
+  <div class="card-body"><span class="ico" style="width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="card-text">Управление<span class="card-sub">мотивация команды, постановка задач, контроль</span></span></div>
 </label>
       <label class="card-option" style="grid-column:1/-1">
   <input type="radio" name="topic" value="Другое">
@@ -335,15 +328,9 @@ input[type=date]:focus{border-color:var(--accent)}
   </div>
 
   <div class="field">
-    <label class="field-label">Тема или задача</label>
-    <textarea id="inp-theme" placeholder="Напишите тему тренинга или опишите задачу. Например: научить мастеров допродавать аксессуары или поднять выручку в вечерние смены" rows="3"></textarea>
-    <div class="field-hint">Можно не знать точное название — опишите своими словами что хотите улучшить</div>
-  </div>
-
-  <div class="field">
-    <label class="field-label">Что должно измениться после тренинга?</label>
-    <textarea id="inp-goal" placeholder="Например: гости начнут чаще возвращаться. Продавцы сами будут предлагать миксы, добавки и аксессуары — без напоминания" rows="3"></textarea>
-    <div class="field-hint">Конкретный результат — что будет иначе в работе команды</div>
+    <label class="field-label">Что хотите получить от тренинга?</label>
+    <textarea id="inp-theme" placeholder="Опишите задачу или желаемый результат. Например: продавцы не предлагают аксессуары — хочу, чтобы это стало нормой. Или: команда избегает конфликтных гостей. Нужно научить работать с претензиями" rows="4"></textarea>
+    <div class="field-hint">Можно не знать точное название тренинга — опишите своими словами</div>
   </div>
 </div>
 
@@ -370,16 +357,6 @@ input[type=date]:focus{border-color:var(--accent)}
 </label>
     </div>
     <div class="loose-err" id="err-format">Выберите формат</div>
-  </div>
-
-  <div class="field">
-    <label class="field-label">Продолжительность</label>
-    <div class="dur-wrap">
-      <div class="dur-display"><span class="dur-num" id="durNum">4</span><span class="dur-unit" id="durUnit">часа</span></div>
-      <input type="range" id="durRange" min="1" max="16" value="4" step="1" oninput="onDur(this.value)">
-      <div class="dur-marks"><span>1 час</span><span>Полдня</span><span>День</span><span>2 дня+</span></div>
-    </div>
-    <div class="field-hint" style="margin-top:10px">Если не знаете — оставьте как есть, тренер подберёт</div>
   </div>
 
   <div class="field">
@@ -414,7 +391,7 @@ input[type=date]:focus{border-color:var(--accent)}
       </div>
     </div>
     <div class="cond-block" id="when-other-block">
-      <textarea id="inp-when-other" placeholder="Например: только в выходные, после 15 сентября, нужно согласовать с директором..." rows="2"></textarea>
+      <textarea id="inp-when-other" placeholder="Например: только в выходные, нужно согласовать с руководителем..." rows="2"></textarea>
     </div>
   </div>
 </div>
@@ -423,17 +400,11 @@ input[type=date]:focus{border-color:var(--accent)}
 <div class="step" id="step5">
   <div class="step-tag">Шаг 5 — Детали</div>
   <div class="step-title">Почти готово!</div>
-  <div class="step-sub">Два вопроса для точной подготовки — можно пропустить</div>
+  <div class="step-sub">Необязательно — но поможет точнее подготовиться</div>
 
   <div class="field">
-    <label class="field-label">Какие тренинги от BURN уже проходили участники?</label>
-    <textarea id="inp-prev" placeholder="Например: «Кальянная карта» в марте, онлайн-обучение по BLACKBURN в прошлом году" rows="3"></textarea>
-    <div class="field-hint">Чтобы не повторять пройденное и выстроить логику</div>
-  </div>
-
-  <div class="field">
-    <label class="field-label">Проходили ли участники другие тренинги?</label>
-    <div class="field-hint" style="margin-bottom:10px">Любые — по продажам, сервису, управлению — не от BURN</div>
+    <label class="field-label">Есть ли у команды опыт обучения?</label>
+    <div class="field-hint" style="margin-bottom:10px">Тренинги, курсы, корпоративные программы — любой формат</div>
     <div class="cards-grid col2" id="f-other-trainings">
       <label class="card-option">
   <input type="radio" name="otherTrainings" value="Нет" onchange="showOtherTrainings(false)">
@@ -445,7 +416,7 @@ input[type=date]:focus{border-color:var(--accent)}
 </label>
     </div>
     <div class="cond-block" id="other-trainings-block">
-      <textarea id="inp-other-trainings" placeholder="Напишите название тренингов, которые проходили участники" rows="3"></textarea>
+      <textarea id="inp-other-trainings" placeholder="Например: тренинг по продажам, корпоративные курсы, онлайн-обучение" rows="3"></textarea>
     </div>
   </div>
 
@@ -474,14 +445,6 @@ input[type=date]:focus{border-color:var(--accent)}
 
 <script>
 const TOTAL=5;let cur=1,dir=1;
-
-function onDur(v){
-  v=parseInt(v);
-  const n=document.getElementById('durNum'),u=document.getElementById('durUnit');
-  if(v<8){n.textContent=v;u.textContent=v===1?'час':(v<5?'часа':'часов')}
-  else if(v===8){n.textContent='1';u.textContent='день'}
-  else{n.textContent=Math.round(v/8*10)/10;u.textContent='дня'}
-}
 
 function showDate(show){document.getElementById('date-block').classList.toggle('visible',show)}
 function showWhenOther(show){document.getElementById('when-other-block').classList.toggle('visible',show)}
@@ -551,13 +514,10 @@ function collect(){
     size:    document.querySelector('input[name=size]:checked')?.value||'',
     topic:   document.querySelector('input[name=topic]:checked')?.value||'',
     theme:   document.getElementById('inp-theme').value.trim(),
-    goal:    document.getElementById('inp-goal').value.trim(),
     format:  document.querySelector('input[name=format]:checked')?.value||'',
-    duration:document.getElementById('durNum').textContent+' '+document.getElementById('durUnit').textContent,
     when:    document.querySelector('input[name=when]:checked')?.value||'',
     date:    document.getElementById('inp-date').value||'',
     whenOther: document.getElementById('inp-when-other').value.trim(),
-    prev:    document.getElementById('inp-prev').value.trim(),
     otherTrainings: document.querySelector('input[name=otherTrainings]:checked')?.value||'',
     otherTrainingsDetail: document.getElementById('inp-other-trainings').value.trim(),
     extra:   document.getElementById('inp-extra').value.trim(),
